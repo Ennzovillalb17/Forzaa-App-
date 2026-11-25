@@ -1,0 +1,15 @@
+INSTRUCCIONES PARA SUBIR FORZA TRAINING CENTER A NETLIFY Y USARLO EN EL CELULAR:
+
+1. Extrae todos los archivos de este ZIP en una carpeta nueva (por ejemplo "forza-web").
+2. Copia tu archivo "index-v2.html" dentro de esa misma carpeta "forza-web" y cambiale el nombre a "index.html".
+3. (Opcional pero recomendado para que tome el logo y funcione sin internet en el celu):
+   Abre "index.html" con el Bloc de notas y pega estas 3 lineas justo antes de </head>: &lt;link rel="manifest" href="manifest.json"&gt;
+&lt;link rel="apple-touch-icon" href="icon-192.png"&gt;
+&lt;script&gt;if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js');}&lt;/script&gt;
+
+   <link rel="manifest" href="manifest.json">
+   <link rel="apple-touch-icon" href="icon-192.png">
+   <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js');}</script>
+
+4. Entra a https://app.netlify.com/drop y arrastra la carpeta "forza-web" completa dentro del recuadro punteado.
+5. Abre el link que te da Netlify desde el navegador de tu celular y toca "Agregar a la pantalla principal" / "Instalar aplicacion".

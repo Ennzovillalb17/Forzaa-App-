@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="doc-title">Forza Training Center | Sistema de Gestión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: 'var(--brand-400)',
+              500: 'var(--brand-500)',
+              600: 'var(--brand-600)',
+            },
+            darkbg: '#0b0f19',
+            cardbg: '#111827',
+            borderdark: '#1f2937'
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-400: #fb923c;
+      --brand-500: #f97316;
+      --brand-600: #ea580c;
+    }
+    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0f19; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+    @media print {
+      body { background-color: #ffffff !important; color: #000000 !important; }
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      .print-container {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      table { width: 100% !important; border-collapse: collapse !important; color: #000000 !important; }
+      th, td { border: 1px solid #cccccc !important; padding: 8px !important; color: #000000 !important; background: #ffffff !important; }
+      th { background-color: #f3f4f6 !important; font-weight: bold !important; }
+      input, select { border: none !important; background: transparent !important; color: #000000 !important; padding: 0 !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+  <!-- SIDEBAR -->
+  <aside class="no-print w-full md:w-64 bg-cardbg border-b md:border-b-0 md:border-r border-borderdark flex flex-col justify-between shrink-0">
+    <div>
+      <!-- BRAND HEADER PERSONALIZABLE -->
+      <div class="p-5 border-b border-borderdark flex items-center gap-3">
+        <div id="sidebar-logo-container" class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center font-extrabold text-white text-xl shadow-lg overflow-hidden shrink-0">
+          <span id="sidebar-logo-letter">F</span>
+          <img id="sidebar-logo-img" src="" alt="Logo" class="hidden w-full h-full object-cover">
+        </div>
+        <div class="min-w-0">
+          <h1 id="sidebar-gym-name" class="font-extrabold text-white tracking-tight text-base leading-tight truncate">FORZA</h1>
+          <p id="sidebar-gym-subtitle" class="text-xs text-brand-400 font-semibold tracking-wider uppercase truncate">Training Center</p>
+        </div>
+      </div>
+
+      <nav class="p-3 flex md:flex-col gap-1 overflow-x-auto">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-brand-500/10 text-brand-400 border border-brand-500/20">
+          <span>📊</span> Inicio
+        </button>
+        <button onclick="switchTab('socios')" id="nav-socios" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>👥</span> Socios
+        </button>
+        <button onclick="switchTab('rutinas')" id="nav-rutinas" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>🏋️</span> Rutinas y Ejercicios
+        </button>
+        <button onclick="switchTab('asistencias')" id="nav-asistencias" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>✅</span> Asistencias (Check-in)
+        </button>
+        <button onclick="switchTab('caja')" id="nav-caja" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>💰</span> Caja & Finanzas
+        </button>
+        <button onclick="switchTab('planes')" id="nav-planes" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>🏷️</span> Planes & Tarifas
+        </button>
+        <button onclick="switchTab('configuracion')" id="nav-configuracion" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all whitespace-nowrap">
+          <span>⚙️</span> Personalizar Marca
+        </button>
+      </nav>
+    </div>
+
+    <div class="hidden md:block p-4 border-t border-borderdark text-xs text-gray-500 space-y-2">
+      <p class="font-medium text-gray-400">Copia de Seguridad</p>
+      <button onclick="exportBackup()" class="w-full py-1.5 px-2.5 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium transition text-center">
+        💾 Exportar Respaldo
+      </button>
+      <label class="block w-full py-1.5 px-2.5 rounded bg-gray-900 hover:bg-gray-800 border border-gray-700 text-gray-400 hover:text-white font-medium transition text-center cursor-pointer">
+        📂 Importar Respaldo
+        <input type="file" accept=".json" onchange="importBackup(event)" class="hidden">
+      </label>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+
+    <!-- ================= TAB 1: DASHBOARD ================= -->
+    <section id="tab-dashboard" class="tab-section space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Panel General</h2>
+          <p class="text-sm text-gray-400" id="current-date-label">Bienvenido</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="openSocioModal()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg text-sm transition shadow-lg">
+            + Nuevo Socio
+          </button>
+          <button onclick="switchTab('asistencias')" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg text-sm transition border border-gray-700">
+            Ir a Check-in
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Socios Activos</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <h3 class="text-3xl font-extrabold text-emerald-400" id="kpi-activos">0</h3>
+            <span class="text-xs text-gray-500" id="kpi-total-socios">de 0 registrados</span>
+          </div>
+        </div>
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Por Vencer / Vencidos</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <h3 class="text-3xl font-extrabold text-amber-400" id="kpi-vencidos">0</h3>
+            <span class="text-xs text-amber-500/80">Requieren atención</span>
+          </div>
+        </div>
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Ingresos Totales</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <h3 class="text-2xl font-extrabold text-white" id="kpi-ingresos">$0</h3>
+            <span class="text-xs text-emerald-400" id="kpi-currency-label">ARS</span>
+          </div>
+        </div>
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Asistencias Hoy</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <h3 class="text-3xl font-extrabold text-brand-400" id="kpi-asistencias">0</h3>
+            <span class="text-xs text-gray-500">Ingresos registrados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Vencimientos Urgentes -->
+        <div class="lg:col-span-2 bg-cardbg border border-borderdark rounded-xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-white text-base">⚠️ Alertas de Vencimiento y Cuotas</h3>
+            <button onclick="switchTab('socios')" class="text-xs text-brand-400 hover:underline">Ver todos</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="border-b border-borderdark text-gray-400 text-xs uppercase">
+                  <th class="pb-3">Socio</th>
+                  <th class="pb-3">Plan</th>
+                  <th class="pb-3">Vencimiento</th>
+                  <th class="pb-3">Estado</th>
+                  <th class="pb-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-vencimientos-list" class="divide-y divide-borderdark"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Kiosco Rápido POS -->
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-white text-base">🥤 Kiosco Rápido</h3>
+              <button onclick="switchTab('configuracion')" class="text-xs text-brand-400 hover:underline">Editar productos</button>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">Suma ventas de mostrador directo a la caja.</p>
+            <div class="space-y-2.5" id="kiosco-items"></div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-borderdark text-xs text-gray-400 flex justify-between">
+            <span>Método por defecto:</span>
+            <select id="kiosco-metodo" class="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white">
+              <option value="Efectivo">Efectivo</option>
+              <option value="Transferencia">Transferencia</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: SOCIOS ================= -->
+    <section id="tab-socios" class="tab-section hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Gestión de Socios</h2>
+          <p class="text-sm text-gray-400">Administración de alumnos, estados de cuota y renovaciones</p>
+        </div>
+        <button onclick="openSocioModal()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg text-sm transition">
+          + Registrar Nuevo Socio
+        </button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="bg-cardbg border border-borderdark rounded-xl p-4 flex flex-col sm:flex-row gap-3">
+        <input type="text" id="search-socio" oninput="renderSocios()" placeholder="Buscar por nombre o DNI..." class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-brand-500">
+        <select id="filter-estado" onchange="renderSocios()" class="bg-gray-900 border border-gray-700 rounded-lg px-3.5 py-2 text-sm text-white">
+          <option value="TODOS">Todos los estados</option>
+          <option value="ACTIVO">Al día (Activos)</option>
+          <option value="POR_VENCER">Por vencer (≤ 5 días)</option>
+          <option value="VENCIDO">Vencidos</option>
+        </select>
+      </div>
+
+      <!-- Tabla Socios -->
+      <div class="bg-cardbg border border-borderdark rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-900/80 border-b border-borderdark text-gray-400 text-xs uppercase">
+              <tr>
+                <th class="p-4">Nombre y Apellido</th>
+                <th class="p-4">DNI</th>
+                <th class="p-4">Teléfono</th>
+                <th class="p-4">Plan</th>
+                <th class="p-4">Vencimiento</th>
+                <th class="p-4">Estado</th>
+                <th class="p-4 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="socios-table-body" class="divide-y divide-borderdark"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: RUTINAS Y EJERCICIOS ================= -->
+    <section id="tab-rutinas" class="tab-section hidden space-y-6 print-container">
+      <!-- Print Header con Logo Personalizado -->
+      <div class="hidden print-only border-b-2 border-black pb-4 mb-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <img id="print-logo-img" src="" alt="Logo" class="hidden w-14 h-14 object-contain">
+            <div>
+              <h1 id="print-gym-title" class="text-2xl font-extrabold uppercase">FORZA TRAINING CENTER</h1>
+              <p id="print-gym-sub" class="text-sm">Planilla Personalizada de Entrenamiento</p>
+            </div>
+          </div>
+          <div class="text-right text-sm">
+            <p id="print-socio-name" class="font-bold text-base"></p>
+            <p id="print-meta-info"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-print flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Planilla de Rutinas y Ejercicios</h2>
+          <p class="text-sm text-gray-400">Armá y personalizá el entrenamiento por socio y día</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <select id="template-selector" class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-white">
+            <option value="">-- Cargar Plantilla Base --</option>
+            <option value="fullbody">Full Body Inicial (2 Días)</option>
+            <option value="ppl">Push / Pull / Legs (3 Días)</option>
+            <option value="fuerza">Fuerza & Hipertrofia 5x5 (2 Días)</option>
+          </select>
+          <button onclick="applyTemplateToCurrentSocio()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-xs font-medium border border-gray-700 transition">
+            Aplicar Plantilla
+          </button>
+          <button onclick="sendRoutineWhatsApp()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+            <span>📲</span> Enviar por WhatsApp
+          </button>
+          <button onclick="prepareAndPrintRoutine()" class="px-3.5 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+            <span>🖨️</span> Imprimir / PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Selector de Socio y Datos de Ficha -->
+      <div class="no-print bg-cardbg border border-borderdark rounded-xl p-5 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Alumno / Socio</label>
+          <select id="rutina-socio-select" onchange="loadSocioRoutine()" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white font-medium"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Objetivo</label>
+          <input type="text" id="rutina-objetivo" onchange="saveRoutineMeta()" placeholder="Ej: Hipertrofia / Fuerza" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Nivel</label>
+          <select id="rutina-nivel" onchange="saveRoutineMeta()" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            <option value="Inicial">Inicial</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Profesor / Coach</label>
+          <input type="text" id="rutina-profesor" onchange="saveRoutineMeta()" placeholder="Nombre del profe" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+      </div>
+
+      <!-- Pestañas de Días -->
+      <div class="no-print flex flex-wrap items-center justify-between gap-3 border-b border-borderdark pb-3">
+        <div class="flex flex-wrap items-center gap-2" id="rutina-dias-tabs"></div>
+        <div class="flex items-center gap-2">
+          <button onclick="addRoutineDay()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-brand-400 border border-gray-700 rounded-lg text-xs font-semibold transition">
+            + Agregar Día
+          </button>
+          <button onclick="renameRoutineDay()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded-lg text-xs font-medium transition">
+            ✏️ Renombrar Día
+          </button>
+          <button onclick="deleteRoutineDay()" class="px-3 py-1.5 bg-red-950/50 hover:bg-red-900/60 text-red-400 border border-red-900/50 rounded-lg text-xs font-medium transition">
+            🗑️ Eliminar Día
+          </button>
+        </div>
+      </div>
+
+      <!-- Formulario Rápido para Agregar Ejercicio -->
+      <div class="no-print bg-cardbg border border-borderdark rounded-xl p-4">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-brand-400 mb-3">+ Agregar Ejercicio a la Planilla</h3>
+        <form onsubmit="addExerciseRow(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+          <div class="lg:col-span-4">
+            <input type="text" id="new-ex-nombre" list="ejercicios-sugeridos" required placeholder="Ejercicio (ej. Press de Banca)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            <datalist id="ejercicios-sugeridos"></datalist>
+          </div>
+          <div class="lg:col-span-1">
+            <input type="text" id="new-ex-series" required placeholder="Series" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white text-center">
+          </div>
+          <div class="lg:col-span-2">
+            <input type="text" id="new-ex-reps" required placeholder="Repeticiones" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white text-center">
+          </div>
+          <div class="lg:col-span-2">
+            <input type="text" id="new-ex-cargas" placeholder="Cargas (kg)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white text-center">
+          </div>
+          <div class="lg:col-span-2">
+            <input type="text" id="new-ex-obs" placeholder="Observaciones" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+          <div class="lg:col-span-1">
+            <button type="submit" class="w-full h-full py-2 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-lg text-sm transition">
+              Añadir
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- PLANILLA PRINCIPAL DE EJERCICIOS -->
+      <div class="bg-cardbg border border-borderdark rounded-xl overflow-hidden">
+        <div class="p-4 bg-gray-900/60 border-b border-borderdark flex items-center justify-between">
+          <h3 class="font-bold text-white text-base" id="current-day-title">Día 1</h3>
+          <span class="text-xs text-gray-400 no-print">Hacé clic en cualquier celda para editar directamente</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-900 border-b border-borderdark text-gray-300 text-xs uppercase tracking-wider">
+              <tr>
+                <th class="p-3.5 w-12 text-center">#</th>
+                <th class="p-3.5">Ejercicio</th>
+                <th class="p-3.5 w-24 text-center">Series</th>
+                <th class="p-3.5 w-32 text-center">Repeticiones</th>
+                <th class="p-3.5 w-32 text-center">Cargas</th>
+                <th class="p-3.5">Observaciones</th>
+                <th class="p-3.5 w-24 text-right no-print">Orden / Quitar</th>
+              </tr>
+            </thead>
+            <tbody id="rutina-table-body" class="divide-y divide-borderdark"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: ASISTENCIAS ================= -->
+    <section id="tab-asistencias" class="tab-section hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Control de Asistencias (Check-in)</h2>
+        <p class="text-sm text-gray-400">Validación de acceso por DNI en recepción</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-cardbg border border-borderdark rounded-xl p-6 space-y-4">
+          <h3 class="font-bold text-white text-lg">Ingreso de Socio</h3>
+          <form onsubmit="handleCheckIn(event)" class="space-y-3">
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Ingresar DNI del Socio</label>
+              <input type="text" id="checkin-dni" required placeholder="Ej: 35123456" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-lg font-bold text-white tracking-wider focus:outline-none focus:border-brand-500">
+            </div>
+            <button type="submit" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-lg text-sm transition shadow-lg">
+              Validar y Registrar Acceso
+            </button>
+          </form>
+          <div id="checkin-result" class="hidden p-4 rounded-xl border text-center space-y-1"></div>
+        </div>
+
+        <div class="lg:col-span-2 bg-cardbg border border-borderdark rounded-xl p-6">
+          <h3 class="font-bold text-white text-base mb-4">Historial de Accesos Recientes</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="border-b border-borderdark text-gray-400 text-xs uppercase">
+                <tr>
+                  <th class="pb-3">Hora / Fecha</th>
+                  <th class="pb-3">Socio</th>
+                  <th class="pb-3">DNI</th>
+                  <th class="pb-3">Estado Cuota</th>
+                </tr>
+              </thead>
+              <tbody id="asistencias-list" class="divide-y divide-borderdark"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: CAJA & FINANZAS ================= -->
+    <section id="tab-caja" class="tab-section hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Caja & Finanzas</h2>
+          <p class="text-sm text-gray-400">Control de ingresos por cuotas, kiosco y egresos del gimnasio</p>
+        </div>
+        <button onclick="openMovimientoModal()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-lg text-sm border border-gray-700 transition">
+          + Registrar Movimiento Manual
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs text-gray-400 uppercase">Total Efectivo</p>
+          <h3 class="text-2xl font-extrabold text-emerald-400 mt-1" id="caja-efectivo">$0</h3>
+        </div>
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs text-gray-400 uppercase">Total Transferencias</p>
+          <h3 class="text-2xl font-extrabold text-sky-400 mt-1" id="caja-transferencia">$0</h3>
+        </div>
+        <div class="bg-cardbg border border-borderdark rounded-xl p-5">
+          <p class="text-xs text-gray-400 uppercase">Egresos / Gastos</p>
+          <h3 class="text-2xl font-extrabold text-red-400 mt-1" id="caja-egresos">$0</h3>
+        </div>
+      </div>
+
+      <div class="bg-cardbg border border-borderdark rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-900 border-b border-borderdark text-gray-400 text-xs uppercase">
+              <tr>
+                <th class="p-4">Fecha</th>
+                <th class="p-4">Concepto</th>
+                <th class="p-4">Tipo</th>
+                <th class="p-4">Método</th>
+                <th class="p-4 text-right">Monto</th>
+              </tr>
+            </thead>
+            <tbody id="caja-table-body" class="divide-y divide-borderdark"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 6: PLANES & TARIFAS ================= -->
+    <section id="tab-planes" class="tab-section hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Planes & Tarifas</h2>
+          <p class="text-sm text-gray-400">Configurá los valores vigentes de tus membresías</p>
+        </div>
+        <button onclick="addNewPlan()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg text-sm transition">
+          + Nuevo Plan
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="planes-grid"></div>
+    </section>
+
+    <!-- ================= TAB 7: PERSONALIZAR MARCA Y CONFIGURACIÓN ================= -->
+    <section id="tab-configuracion" class="tab-section hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Personalizar Marca y Sistema</h2>
+        <p class="text-sm text-gray-400">Subí tu logo, cambiá los colores, textos de WhatsApp, productos del kiosco y banco de ejercicios</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Identidad Visual y Logo -->
+        <div class="bg-cardbg border border-borderdark rounded-xl p-6 space-y-4">
+          <h3 class="font-bold text-white text-base border-b border-borderdark pb-3">🎨 Identidad Visual y Logo</h3>
+
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl bg-gray-900 border border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
+              <span id="config-logo-placeholder" class="text-2xl font-extrabold text-brand-400">F</span>
+              <img id="config-logo-preview" src="" alt="Preview Logo" class="hidden w-full h-full object-contain">
+            </div>
+            <div class="space-y-2">
+              <label class="inline-block px-3.5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold rounded-lg cursor-pointer transition">
+                📤 Subir Logo (PNG / JPG / SVG)
+                <input type="file" accept="image/*" onchange="handleLogoUpload(event)" class="hidden">
+              </label>
+              <button onclick="removeLogo()" class="block text-xs text-red-400 hover:underline">Quitar logo y usar inicial</button>
+              <p class="text-[11px] text-gray-500">El logo se mostrará en el menú lateral y en las rutinas impresas/PDF.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Nombre Principal del Gimnasio</label>
+              <input type="text" id="cfg-gym-name" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Subtítulo / Eslogan</label>
+              <input type="text" id="cfg-gym-subtitle" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Color Principal de Marca</label>
+              <div class="flex items-center gap-2">
+                <input type="color" id="cfg-brand-color" value="#f97316" class="h-9 w-14 bg-gray-900 border border-gray-700 rounded cursor-pointer">
+                <span class="text-xs text-gray-400">Botones y acentos</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Símbolo de Moneda</label>
+              <input type="text" id="cfg-currency" placeholder="ARS $" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Mensaje de Recordatorio por WhatsApp</label>
+            <textarea id="cfg-wa-template" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-white"></textarea>
+            <p class="text-[11px] text-gray-500 mt-1">Variables disponibles: <code class="text-brand-400">{nombre}</code>, <code class="text-brand-400">{gimnasio}</code>, <code class="text-brand-400">{vencimiento}</code></p>
+          </div>
+
+          <button onclick="saveBrandConfig()" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-lg text-sm transition">
+            Guardar Cambios de Marca
+          </button>
+        </div>
+
+        <!-- Personalizar Kiosco y Ejercicios Sugeridos -->
+        <div class="space-y-6">
+          <!-- Kiosco -->
+          <div class="bg-cardbg border border-borderdark rounded-xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-borderdark pb-3">
+              <h3 class="font-bold text-white text-base">🥤 Productos del Kiosco Rápido</h3>
+              <button onclick="addKioscoProduct()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-brand-400 rounded text-xs font-bold">+ Producto</button>
+            </div>
+            <div id="cfg-kiosco-list" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- Banco de Ejercicios -->
+          <div class="bg-cardbg border border-borderdark rounded-xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-borderdark pb-3">
+              <h3 class="font-bold text-white text-base">🏋️ Banco de Ejercicios Sugeridos</h3>
+              <button onclick="addSuggestedExercise()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-brand-400 rounded text-xs font-bold">+ Ejercicio</button>
+            </div>
+            <p class="text-xs text-gray-400">Aparecen automáticamente al escribir en la planilla de rutinas.</p>
+            <div id="cfg-ejercicios-list" class="flex flex-wrap gap-2 max-h-48 overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL ALTA / EDICIÓN SOCIO -->
+  <div id="socio-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardbg border border-borderdark rounded-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b border-borderdark pb-3">
+        <h3 class="text-lg font-bold text-white" id="socio-modal-title">Nuevo Socio</h3>
+        <button onclick="closeSocioModal()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <form onsubmit="saveSocio(event)" class="space-y-3">
+        <input type="hidden" id="socio-id">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Nombre y Apellido</label>
+          <input type="text" id="socio-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">DNI</label>
+            <input type="text" id="socio-dni" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">WhatsApp (con código área)</label>
+            <input type="text" id="socio-telefono" required placeholder="5493755..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Plan</label>
+            <select id="socio-plan" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white"></select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Fecha Vencimiento</label>
+            <input type="date" id="socio-vencimiento" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+        </div>
+        <div id="socio-pago-box" class="pt-2 border-t border-borderdark flex items-center justify-between">
+          <label class="flex items-center gap-2 text-xs text-gray-300 cursor-pointer">
+            <input type="checkbox" id="socio-registrar-pago" checked class="rounded text-brand-500">
+            Registrar cobro en caja ahora
+          </label>
+          <select id="socio-metodo-pago" class="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeSocioModal()" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg text-sm">Guardar Socio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL MOVIMIENTO CAJA -->
+  <div id="movimiento-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardbg border border-borderdark rounded-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b border-borderdark pb-3">
+        <h3 class="text-lg font-bold text-white">Registrar Movimiento en Caja</h3>
+        <button onclick="closeMovimientoModal()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <form onsubmit="saveMovimiento(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Tipo</label>
+          <select id="mov-tipo" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+            <option value="INGRESO">Ingreso (+)</option>
+            <option value="EGRESO">Egreso / Gasto (-)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Concepto / Detalle</label>
+          <input type="text" id="mov-concepto" required placeholder="Ej: Compra insumos limpieza / Clase suelta" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Monto</label>
+            <input type="number" id="mov-monto" required min="1" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Método</label>
+            <select id="mov-metodo" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="Efectivo">Efectivo</option>
+              <option value="Transferencia">Transferencia</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeMovimientoModal()" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg text-sm">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ================= ESTADO INICIAL & PERSISTENCIA =================
+    const STORAGE_KEY = 'forza_training_center_v3';
+
+    function addDaysToToday(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    const defaultData = {
+      config: {
+        gymName: 'FORZA',
+        gymSubtitle: 'Training Center',
+        logoBase64: '',
+        brandColor: '#f97316',
+        currency: 'ARS',
+        waTemplate: '¡Hola {nombre}! Te saludamos desde *{gimnasio}* 💪. Te recordamos que tu cuota vence el *{vencimiento}*. ¡Te esperamos para seguir entrenando!'
+      },
+      ejerciciosCatalogo: [
+        'Sentadilla Libre con Barra',
+        'Press de Banca Plano',
+        'Peso Muerto Convencional',
+        'Dominadas Pronas',
+        'Jalón al Pecho en Polea',
+        'Press Militar con Mancuernas',
+        'Remo con Barra',
+        'Prensa de Piernas 45°',
+        'Curl de Bíceps con Barra Z',
+        'Extensión de Tríceps en Polea',
+        'Elevaciones Laterales',
+        'Hip Thrust con Barra',
+        'Plancha Abdominal Isométrica'
+      ],
+      planes: [
+        { id: 'p1', nombre: 'Pase Libre Mensual', precio: 28000, dias: 30, descripcion: 'Acceso ilimitado a sala de musculación y cardio.' },
+        { id: 'p2', nombre: 'Musculación 3x Semana', precio: 22000, dias: 30, descripcion: 'Hasta 12 ingresos mensuales.' },
+        { id: 'p3', nombre: 'Plan Trimestral Forza', precio: 75000, dias: 90, descripcion: '3 meses con seguimiento de rutina incluido.' }
+      ],
+      socios: [
+        { id: 's1', nombre: 'Lucas Fernández', dni: '38456123', telefono: '5493755123456', planId: 'p1', vencimiento: addDaysToToday(18) },
+        { id: 's2', nombre: 'Martina Gómez', dni: '40123987', telefono: '5493755654321', planId: 'p2', vencimiento: addDaysToToday(2) },
+        { id: 's3', nombre: 'Diego Benítez', dni: '34987654', telefono: '5493755112233', planId: 'p1', vencimiento: addDaysToToday(-3) },
+        { id: 's4', nombre: 'Camila Rojas', dni: '41567890', telefono: '5493755998877', planId: 'p3', vencimiento: addDaysToToday(45) }
+      ],
+      movimientos: [
+        { id: 'm1', fecha: new Date().toLocaleDateString('es-AR'), concepto: 'Cuota Pase Libre - Lucas Fernández', tipo: 'INGRESO', metodo: 'Transferencia', monto: 28000 },
+        { id: 'm2', fecha: new Date().toLocaleDateString('es-AR'), concepto: 'Plan Trimestral - Camila Rojas', tipo: 'INGRESO', metodo: 'Efectivo', monto: 75000 }
+      ],
+      asistencias: [
+        { fecha: new Date().toLocaleString('es-AR'), nombre: 'Lucas Fernández', dni: '38456123', estado: 'ACTIVO' }
+      ],
+      kiosco: [
+        { nombre: 'Agua Mineral 500ml', precio: 1200 },
+        { nombre: 'Bebida Isotónica', precio: 2200 },
+        { nombre: 'Barra Proteica', precio: 2800 },
+        { nombre: 'Scoop Proteína / Pre-entreno', precio: 3000 }
+      ],
+      rutinas: {
+        's1': {
+          objetivo: 'Hipertrofia y Fuerza General',
+          nivel: 'Intermedio',
+          profesor: 'Coach Forza',
+          dias: [
+            {
+              nombre: 'Día 1: Empuje (Pecho, Hombro, Tríceps)',
+              ejercicios: [
+                { nombre: 'Press de Banca Plano con Barra', series: '4', reps: '8-10', cargas: '70 kg', observaciones: 'Descanso 90s. Controlar bajada.' },
+                { nombre: 'Press Inclinado con Mancuernas', series: '3', reps: '10-12', cargas: '22 kg c/u', observaciones: 'Banco a 30 grados.' },
+                { nombre: 'Press Militar con Mancuernas', series: '4', reps: '10', cargas: '16 kg c/u', observaciones: 'Sin balanceo lumbar.' },
+                { nombre: 'Elevaciones Laterales', series: '4', reps: '12-15', cargas: '10 kg c/u', observaciones: 'Última serie drop-set.' },
+                { nombre: 'Extensión de Tríceps en Polea', series: '3', reps: '12-15', cargas: '25 kg', observaciones: 'Codos pegados al torso.' }
+              ]
+            },
+            {
+              nombre: 'Día 2: Tirón (Espalda, Bíceps)',
+              ejercicios: [
+                { nombre: 'Dominadas Pronas', series: '4', reps: '8-10', cargas: 'Peso corporal', observaciones: 'Rango completo de movimiento.' },
+                { nombre: 'Remo con Barra', series: '4', reps: '10', cargas: '60 kg', observaciones: 'Espalda neutra.' },
+                { nombre: 'Jalón al Pecho Agarre Neutro', series: '3', reps: '12', cargas: '50 kg', observaciones: 'Pausa 1s abajo.' },
+                { nombre: 'Curl de Bíceps con Barra Z', series: '3', reps: '10-12', cargas: '25 kg', observaciones: 'Descanso 60s.' }
+              ]
+            }
+          ]
+        }
+      }
+    };
+
+    let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+    if (!state.config) state.config = defaultData.config;
+    if (!state.ejerciciosCatalogo) state.ejerciciosCatalogo = defaultData.ejerciciosCatalogo;
+
+    let currentRoutineSocioId = state.socios[0]?.id || '';
+    let currentRoutineDayIndex = 0;
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function formatARS(num) {
+      return '$' + Number(num || 0).toLocaleString('es-AR');
+    }
+
+    // ================= APLICAR IDENTIDAD DE MARCA =================
+    function adjustColor(hex, amount) {
+      let col = hex.replace('#', '');
+      if (col.length === 3) col = col.split('').map(c => c + c).join('');
+      const num = parseInt(col, 16);
+      let r = Math.min(255, Math.max(0, (num >> 16) + amount));
+      let g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+      let b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+      return '#' + (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0');
+    }
+
+    function applyBrandTheme() {
+      const cfg = state.config;
+      const baseColor = cfg.brandColor || '#f97316';
+      document.documentElement.style.setProperty('--brand-500', baseColor);
+      document.documentElement.style.setProperty('--brand-400', adjustColor(baseColor, 28));
+      document.documentElement.style.setProperty('--brand-600', adjustColor(baseColor, -24));
+
+      const fullName = `${cfg.gymName} ${cfg.gymSubtitle}`.trim();
+      document.getElementById('doc-title').textContent = `${fullName} | Sistema de Gestión`;
+      document.getElementById('sidebar-gym-name').textContent = cfg.gymName || 'GIMNASIO';
+      document.getElementById('sidebar-gym-subtitle').textContent = cfg.gymSubtitle || '';
+      document.getElementById('kpi-currency-label').textContent = cfg.currency || 'ARS';
+
+      const sideImg = document.getElementById('sidebar-logo-img');
+      const sideLetter = document.getElementById('sidebar-logo-letter');
+      const printImg = document.getElementById('print-logo-img');
+
+      if (cfg.logoBase64) {
+        sideImg.src = cfg.logoBase64;
+        sideImg.classList.remove('hidden');
+        sideLetter.classList.add('hidden');
+        printImg.src = cfg.logoBase64;
+        printImg.classList.remove('hidden');
+      } else {
+        sideImg.classList.add('hidden');
+        sideLetter.classList.remove('hidden');
+        sideLetter.textContent = (cfg.gymName || 'F').charAt(0).toUpperCase();
+        printImg.classList.add('hidden');
+      }
+    }
+
+    function getSocioStatus(vencimientoStr) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const venc = new Date(vencimientoStr + 'T00:00:00');
+      const diffDays = Math.ceil((venc - today) / (1000 * 60 * 60 * 24));
+      if (diffDays < 0) return { code: 'VENCIDO', label: `Vencido (${Math.abs(diffDays)}d)`, badge: 'bg-red-500/10 text-red-400 border-red-500/30', diff: diffDays };
+      if (diffDays <= 5) return { code: 'POR_VENCER', label: `Vence en ${diffDays}d`, badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30', diff: diffDays };
+      return { code: 'ACTIVO', label: 'Al día', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30', diff: diffDays };
+    }
+
+    // ================= NAVEGACIÓN =================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-500/10', 'text-brand-400', 'border', 'border-brand-500/20');
+        btn.classList.add('text-gray-400');
+      });
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-500/10', 'text-brand-400', 'border', 'border-brand-500/20');
+        activeBtn.classList.remove('text-gray-400');
+      }
+
+      if (tabId === 'dashboard') renderDashboard();
+      if (tabId === 'socios') renderSocios();
+      if (tabId === 'rutinas') initRutinasTab();
+      if (tabId === 'asistencias') renderAsistencias();
+      if (tabId === 'caja') renderCaja();
+      if (tabId === 'planes') renderPlanes();
+      if (tabId === 'configuracion') renderConfigTab();
+    }
+
+    // ================= CONFIGURACIÓN DE MARCA =================
+    function renderConfigTab() {
+      const cfg = state.config;
+      document.getElementById('cfg-gym-name').value = cfg.gymName || '';
+      document.getElementById('cfg-gym-subtitle').value = cfg.gymSubtitle || '';
+      document.getElementById('cfg-brand-color').value = cfg.brandColor || '#f97316';
+      document.getElementById('cfg-currency').value = cfg.currency || 'ARS';
+      document.getElementById('cfg-wa-template').value = cfg.waTemplate || '';
+
+      const prevImg = document.getElementById('config-logo-preview');
+      const prevHolder = document.getElementById('config-logo-placeholder');
+      if (cfg.logoBase64) {
+        prevImg.src = cfg.logoBase64;
+        prevImg.classList.remove('hidden');
+        prevHolder.classList.add('hidden');
+      } else {
+        prevImg.classList.add('hidden');
+        prevHolder.classList.remove('hidden');
+        prevHolder.textContent = (cfg.gymName || 'F').charAt(0).toUpperCase();
+      }
+
+      // Render Kiosco editable
+      const kioscoList = document.getElementById('cfg-kiosco-list');
+      kioscoList.innerHTML = state.kiosco.map((item, idx) => `
+        <div class="flex items-center gap-2 bg-gray-900 p-2 rounded-lg border border-gray-800">
+          <input type="text" value="${item.nombre}" onchange="updateKioscoItem(${idx}, 'nombre', this.value)" class="flex-1 bg-transparent text-xs text-white focus:outline-none">
+          <input type="number" value="${item.precio}" onchange="updateKioscoItem(${idx}, 'precio', this.value)" class="w-24 bg-gray-950 border border-gray-700 rounded px-2 py-1 text-xs text-emerald-400 font-bold text-right">
+          <button onclick="deleteKioscoItem(${idx})" class="text-red-400 hover:text-red-300 text-xs px-1">✕</button>
+        </div>
+      `).join('');
+
+      // Render Banco de Ejercicios editable
+      const ejList = document.getElementById('cfg-ejercicios-list');
+      ejList.innerHTML = state.ejerciciosCatalogo.map((ej, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-900 border border-gray-700 text-xs text-gray-200">
+          ${ej}
+          <button onclick="deleteSuggestedExercise(${idx})" class="text-red-400 hover:text-red-300 font-bold">&times;</button>
+        </span>
+      `).join('');
+    }
+
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        state.config.logoBase64 = evt.target.result;
+        saveState();
+        applyBrandTheme();
+        renderConfigTab();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeLogo() {
+      state.config.logoBase64 = '';
+      saveState();
+      applyBrandTheme();
+      renderConfigTab();
+    }
+
+    function saveBrandConfig() {
+      state.config.gymName = document.getElementById('cfg-gym-name').value.trim() || 'FORZA';
+      state.config.gymSubtitle = document.getElementById('cfg-gym-subtitle').value.trim();
+      state.config.brandColor = document.getElementById('cfg-brand-color').value;
+      state.config.currency = document.getElementById('cfg-currency').value.trim() || 'ARS';
+      state.config.waTemplate = document.getElementById('cfg-wa-template').value;
+      saveState();
+      applyBrandTheme();
+      alert('✅ Personalización guardada correctamente.');
+    }
+
+    function updateKioscoItem(idx, field, val) {
+      state.kiosco[idx][field] = field === 'precio' ? Number(val) : val;
+      saveState();
+    }
+
+    function addKioscoProduct() {
+      const nombre = prompt('Nombre del producto (ej: Gatorade 500ml):');
+      if (!nombre) return;
+      const precio = Number(prompt('Precio:', '2000'));
+      state.kiosco.push({ nombre: nombre.trim(), precio: precio || 1000 });
+      saveState();
+      renderConfigTab();
+    }
+
+    function deleteKioscoItem(idx) {
+      state.kiosco.splice(idx, 1);
+      saveState();
+      renderConfigTab();
+    }
+
+    function addSuggestedExercise() {
+      const nombre = prompt('Nombre del ejercicio para sugerencias rápidas:');
+      if (!nombre) return;
+      state.ejerciciosCatalogo.push(nombre.trim());
+      saveState();
+      renderConfigTab();
+    }
+
+    function deleteSuggestedExercise(idx) {
+      state.ejerciciosCatalogo.splice(idx, 1);
+      saveState();
+      renderConfigTab();
+    }
+
+    // ================= DASHBOARD =================
+    function renderDashboard() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const fullGym = `${state.config.gymName} ${state.config.gymSubtitle}`.trim();
+      document.getElementById('current-date-label').textContent = `${fullGym} • ${new Date().toLocaleDateString('es-AR', options)}`;
+
+      let activos = 0, vencidos = 0;
+      const alertList = [];
+
+      state.socios.forEach(s => {
+        const st = getSocioStatus(s.vencimiento);
+        if (st.code === 'ACTIVO') activos++;
+        else {
+          vencidos++;
+          alertList.push({ ...s, status: st });
+        }
+      });
+
+      const totalIngresos = state.movimientos
+        .filter(m => m.tipo === 'INGRESO')
+        .reduce((acc, m) => acc + Number(m.monto), 0);
+
+      const todayStr = new Date().toLocaleDateString('es-AR');
+      const asistHoy = state.asistencias.filter(a => a.fecha.startsWith(todayStr)).length;
+
+      document.getElementById('kpi-activos').textContent = activos;
+      document.getElementById('kpi-total-socios').textContent = `de ${state.socios.length} registrados`;
+      document.getElementById('kpi-vencidos').textContent = vencidos;
+      document.getElementById('kpi-ingresos').textContent = formatARS(totalIngresos);
+      document.getElementById('kpi-asistencias').textContent = asistHoy;
+
+      const tbody = document.getElementById('dashboard-vencimientos-list');
+      if (alertList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">🎉 ¡Todos los socios tienen su cuota al día!</td></tr>`;
+      } else {
+        tbody.innerHTML = alertList.map(s => {
+          const plan = state.planes.find(p => p.id === s.planId)?.nombre || 'Plan';
+          return `
+            <tr class="hover:bg-gray-900/40">
+              <td class="py-3 font-medium text-white">${s.nombre}</td>
+              <td class="py-3 text-gray-400">${plan}</td>
+              <td class="py-3 text-gray-300">${s.vencimiento}</td>
+              <td class="py-3"><span class="px-2 py-0.5 rounded-full text-xs border ${s.status.badge}">${s.status.label}</span></td>
+              <td class="py-3 text-right space-x-1">
+                <button onclick="renovarSocio('${s.id}')" class="px-2.5 py-1 bg-brand-500/20 text-brand-400 hover:bg-brand-500 hover:text-white rounded text-xs font-medium transition">Renovar</button>
+                <button onclick="avisarWhatsApp('${s.id}')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded text-xs font-medium transition">WhatsApp</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      const kioscoContainer = document.getElementById('kiosco-items');
+      kioscoContainer.innerHTML = state.kiosco.map((item, idx) => `
+        <div class="flex items-center justify-between p-2.5 rounded-lg bg-gray-900/80 border border-gray-800">
+          <div>
+            <p class="text-sm font-medium text-white">${item.nombre}</p>
+            <p class="text-xs text-brand-400 font-semibold">${formatARS(item.precio)}</p>
+          </div>
+          <button onclick="venderKiosco(${idx})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition">
+            + Cobrar
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function venderKiosco(idx) {
+      const item = state.kiosco[idx];
+      const metodo = document.getElementById('kiosco-metodo').value;
+      state.movimientos.unshift({
+        id: 'm' + Date.now(),
+        fecha: new Date().toLocaleDateString('es-AR'),
+        concepto: `Kiosco: ${item.nombre}`,
+        tipo: 'INGRESO',
+        metodo,
+        monto: item.precio
+      });
+      saveState();
+      renderDashboard();
+      alert(`✅ Venta registrada: ${item.nombre} (${formatARS(item.precio)}) en ${metodo}`);
+    }
+
+    // ================= SOCIOS =================
+    function renderSocios() {
+      const q = document.getElementById('search-socio').value.toLowerCase();
+      const filter = document.getElementById('filter-estado').value;
+      const tbody = document.getElementById('socios-table-body');
+
+      const filtered = state.socios.filter(s => {
+        const matchText = s.nombre.toLowerCase().includes(q) || s.dni.includes(q);
+        const st = getSocioStatus(s.vencimiento).code;
+        const matchStatus = filter === 'TODOS' || st === filter;
+        return matchText && matchStatus;
+      });
+
+      tbody.innerHTML = filtered.map(s => {
+        const plan = state.planes.find(p => p.id === s.planId)?.nombre || 'Sin plan';
+        const st = getSocioStatus(s.vencimiento);
+        return `
+          <tr class="hover:bg-gray-900/40">
+            <td class="p-4 font-semibold text-white">${s.nombre}</td>
+            <td class="p-4 text-gray-300">${s.dni}</td>
+            <td class="p-4 text-gray-400">${s.telefono}</td>
+            <td class="p-4 text-gray-300">${plan}</td>
+            <td class="p-4 text-gray-300">${s.vencimiento}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs border ${st.badge}">${st.label}</span></td>
+            <td class="p-4 text-right space-x-1 whitespace-nowrap">
+              <button onclick="openRoutineForSocio('${s.id}')" title="Ver Rutina" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded text-xs">🏋️ Rutina</button>
+              <button onclick="renovarSocio('${s.id}')" class="px-2.5 py-1 bg-brand-500/20 text-brand-400 hover:bg-brand-500 hover:text-white rounded text-xs font-medium transition">Renovar</button>
+              <button onclick="avisarWhatsApp('${s.id}')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded text-xs font-medium transition">WA</button>
+              <button onclick="editSocio('${s.id}')" class="px-2 py-1 text-gray-400 hover:text-white text-xs">✏️</button>
+              <button onclick="deleteSocio('${s.id}')" class="px-2 py-1 text-red-400 hover:text-red-300 text-xs">🗑️</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openSocioModal(socio = null) {
+      const planSelect = document.getElementById('socio-plan');
+      planSelect.innerHTML = state.planes.map(p => `<option value="${p.id}">${p.nombre} (${formatARS(p.precio)})</option>`).join('');
+
+      if (socio) {
+        document.getElementById('socio-modal-title').textContent = 'Editar Socio';
+        document.getElementById('socio-id').value = socio.id;
+        document.getElementById('socio-nombre').value = socio.nombre;
+        document.getElementById('socio-dni').value = socio.dni;
+        document.getElementById('socio-telefono').value = socio.telefono;
+        document.getElementById('socio-plan').value = socio.planId;
+        document.getElementById('socio-vencimiento').value = socio.vencimiento;
+        document.getElementById('socio-pago-box').classList.add('hidden');
+      } else {
+        document.getElementById('socio-modal-title').textContent = 'Nuevo Socio';
+        document.getElementById('socio-id').value = '';
+        document.getElementById('socio-nombre').value = '';
+        document.getElementById('socio-dni').value = '';
+        document.getElementById('socio-telefono').value = '';
+        document.getElementById('socio-vencimiento').value = addDaysToToday(30);
+        document.getElementById('socio-pago-box').classList.remove('hidden');
+      }
+      document.getElementById('socio-modal').classList.remove('hidden');
+      document.getElementById('socio-modal').classList.add('flex');
+    }
+
+    function closeSocioModal() {
+      document.getElementById('socio-modal').classList.add('hidden');
+      document.getElementById('socio-modal').classList.remove('flex');
+    }
+
+    function saveSocio(e) {
+      e.preventDefault();
+      const id = document.getElementById('socio-id').value;
+      const nombre = document.getElementById('socio-nombre').value.trim();
+      const dni = document.getElementById('socio-dni').value.trim();
+      const telefono = document.getElementById('socio-telefono').value.trim();
+      const planId = document.getElementById('socio-plan').value;
+      const vencimiento = document.getElementById('socio-vencimiento').value;
+
+      if (id) {
+        const idx = state.socios.findIndex(s => s.id === id);
+        if (idx !== -1) state.socios[idx] = { id, nombre, dni, telefono, planId, vencimiento };
+      } else {
+        const newId = 's' + Date.now();
+        state.socios.push({ id: newId, nombre, dni, telefono, planId, vencimiento });
+        if (document.getElementById('socio-registrar-pago').checked) {
+          const plan = state.planes.find(p => p.id === planId);
+          state.movimientos.unshift({
+            id: 'm' + Date.now(),
+            fecha: new Date().toLocaleDateString('es-AR'),
+            concepto: `Alta Cuota (${plan?.nombre || 'Plan'}) - ${nombre}`,
+            tipo: 'INGRESO',
+            metodo: document.getElementById('socio-metodo-pago').value,
+            monto: plan?.precio || 0
+          });
+        }
+      }
+      saveState();
+      closeSocioModal();
+      renderSocios();
+      renderDashboard();
+    }
+
+    function editSocio(id) {
+      const s = state.socios.find(x => x.id === id);
+      if (s) openSocioModal(s);
+    }
+
+    function deleteSocio(id) {
+      if (!confirm('¿Seguro que querés eliminar este socio?')) return;
+      state.socios = state.socios.filter(s => s.id !== id);
+      saveState();
+      renderSocios();
+      renderDashboard();
+    }
+
+    function renovarSocio(id) {
+      const s = state.socios.find(x => x.id === id);
+      if (!s) return;
+      const plan = state.planes.find(p => p.id === s.planId) || state.planes[0];
+      if (!confirm(`¿Renovar cuota de ${s.nombre} por ${plan.dias} días (${formatARS(plan.precio)})?`)) return;
+
+      const baseDate = new Date(s.vencimiento) > new Date() ? new Date(s.vencimiento + 'T00:00:00') : new Date();
+      baseDate.setDate(baseDate.getDate() + Number(plan.dias));
+      s.vencimiento = baseDate.toISOString().split('T')[0];
+
+      state.movimientos.unshift({
+        id: 'm' + Date.now(),
+        fecha: new Date().toLocaleDateString('es-AR'),
+        concepto: `Renovación (${plan.nombre}) - ${s.nombre}`,
+        tipo: 'INGRESO',
+        metodo: 'Efectivo',
+        monto: plan.precio
+      });
+
+      saveState();
+      renderDashboard();
+      renderSocios();
+      alert(`✅ Cuota renovada hasta el ${s.vencimiento}`);
+    }
+
+    function avisarWhatsApp(id) {
+      const s = state.socios.find(x => x.id === id);
+      if (!s) return;
+      const fullGym = `${state.config.gymName} ${state.config.gymSubtitle}`.trim();
+      const rawMsg = (state.config.waTemplate || defaultData.config.waTemplate)
+        .replace(/{nombre}/g, s.nombre)
+        .replace(/{gimnasio}/g, fullGym)
+        .replace(/{vencimiento}/g, s.vencimiento);
+      window.open(`https://wa.me/${s.telefono.replace(/\D/g, '')}?text=${encodeURIComponent(rawMsg)}`, '_blank');
+    }
+
+    // ================= RUTINAS Y EJERCICIOS =================
+    function openRoutineForSocio(socioId) {
+      currentRoutineSocioId = socioId;
+      currentRoutineDayIndex = 0;
+      switchTab('rutinas');
+    }
+
+    function initRutinasTab() {
+      const datalist = document.getElementById('ejercicios-sugeridos');
+      datalist.innerHTML = state.ejerciciosCatalogo.map(ej => `<option value="${ej}">`).join('');
+
+      const select = document.getElementById('rutina-socio-select');
+      select.innerHTML = state.socios.map(s => `<option value="${s.id}">${s.nombre} (DNI: ${s.dni})</option>`).join('');
+      if (!state.socios.some(s => s.id === currentRoutineSocioId) && state.socios.length > 0) {
+        currentRoutineSocioId = state.socios[0].id;
+      }
+      select.value = currentRoutineSocioId;
+      loadSocioRoutine();
+    }
+
+    function ensureSocioRoutine(socioId) {
+      if (!state.rutinas[socioId]) {
+        state.rutinas[socioId] = {
+          objetivo: 'Acondicionamiento General',
+          nivel: 'Inicial',
+          profesor: 'Coach',
+          dias: [{ nombre: 'Día 1', ejercicios: [] }]
+        };
+      }
+      return state.rutinas[socioId];
+    }
+
+    function loadSocioRoutine() {
+      currentRoutineSocioId = document.getElementById('rutina-socio-select').value;
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      if (currentRoutineDayIndex >= rutina.dias.length) currentRoutineDayIndex = 0;
+
+      document.getElementById('rutina-objetivo').value = rutina.objetivo || '';
+      document.getElementById('rutina-nivel').value = rutina.nivel || 'Inicial';
+      document.getElementById('rutina-profesor').value = rutina.profesor || '';
+
+      renderRoutineDaysTabs();
+      renderRoutineTable();
+    }
+
+    function saveRoutineMeta() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      rutina.objetivo = document.getElementById('rutina-objetivo').value;
+      rutina.nivel = document.getElementById('rutina-nivel').value;
+      rutina.profesor = document.getElementById('rutina-profesor').value;
+      saveState();
+    }
+
+    function renderRoutineDaysTabs() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const container = document.getElementById('rutina-dias-tabs');
+      container.innerHTML = rutina.dias.map((dia, idx) => {
+        const isActive = idx === currentRoutineDayIndex;
+        return `
+          <button onclick="selectRoutineDay(${idx})" class="px-4 py-2 rounded-lg text-xs font-bold transition ${isActive ? 'bg-brand-500 text-white shadow-md' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}">
+            ${dia.nombre}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectRoutineDay(idx) {
+      currentRoutineDayIndex = idx;
+      renderRoutineDaysTabs();
+      renderRoutineTable();
+    }
+
+    function addRoutineDay() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const num = rutina.dias.length + 1;
+      const nombre = prompt('Nombre del nuevo día de entrenamiento:', `Día ${num}`);
+      if (!nombre) return;
+      rutina.dias.push({ nombre: nombre.trim(), ejercicios: [] });
+      currentRoutineDayIndex = rutina.dias.length - 1;
+      saveState();
+      renderRoutineDaysTabs();
+      renderRoutineTable();
+    }
+
+    function renameRoutineDay() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const dia = rutina.dias[currentRoutineDayIndex];
+      const nuevo = prompt('Nuevo nombre para esta sesión:', dia.nombre);
+      if (!nuevo) return;
+      dia.nombre = nuevo.trim();
+      saveState();
+      renderRoutineDaysTabs();
+      renderRoutineTable();
+    }
+
+    function deleteRoutineDay() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      if (rutina.dias.length <= 1) return alert('La rutina debe tener al menos un día.');
+      if (!confirm('¿Eliminar este día y todos sus ejercicios?')) return;
+      rutina.dias.splice(currentRoutineDayIndex, 1);
+      currentRoutineDayIndex = 0;
+      saveState();
+      renderRoutineDaysTabs();
+      renderRoutineTable();
+    }
+
+    function addExerciseRow(e) {
+      e.preventDefault();
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const dia = rutina.dias[currentRoutineDayIndex];
+
+      dia.ejercicios.push({
+        nombre: document.getElementById('new-ex-nombre').value.trim(),
+        series: document.getElementById('new-ex-series').value.trim(),
+        reps: document.getElementById('new-ex-reps').value.trim(),
+        cargas: document.getElementById('new-ex-cargas').value.trim() || '-',
+        observaciones: document.getElementById('new-ex-obs').value.trim() || '-'
+      });
+
+      e.target.reset();
+      saveState();
+      renderRoutineTable();
+    }
+
+    function updateExerciseCell(idx, field, value) {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      rutina.dias[currentRoutineDayIndex].ejercicios[idx][field] = value;
+      saveState();
+    }
+
+    function moveExercise(idx, direction) {
+      const ejercicios = ensureSocioRoutine(currentRoutineSocioId).dias[currentRoutineDayIndex].ejercicios;
+      const target = idx + direction;
+      if (target < 0 || target >= ejercicios.length) return;
+      [ejercicios[idx], ejercicios[target]] = [ejercicios[target], ejercicios[idx]];
+      saveState();
+      renderRoutineTable();
+    }
+
+    function removeExercise(idx) {
+      const ejercicios = ensureSocioRoutine(currentRoutineSocioId).dias[currentRoutineDayIndex].ejercicios;
+      ejercicios.splice(idx, 1);
+      saveState();
+      renderRoutineTable();
+    }
+
+    function renderRoutineTable() {
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const dia = rutina.dias[currentRoutineDayIndex];
+      document.getElementById('current-day-title').textContent = dia.nombre;
+
+      const tbody = document.getElementById('rutina-table-body');
+      if (dia.ejercicios.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-500">No hay ejercicios cargados en este día. Agregá uno arriba o cargá una plantilla.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = dia.ejercicios.map((ex, idx) => `
+        <tr class="hover:bg-gray-900/40">
+          <td class="p-3 text-center font-bold text-gray-500">${idx + 1}</td>
+          <td class="p-3">
+            <input type="text" value="${ex.nombre}" onchange="updateExerciseCell(${idx}, 'nombre', this.value)" class="w-full bg-transparent border border-transparent hover:border-gray-700 focus:border-brand-500 rounded px-2 py-1 text-white font-semibold focus:outline-none">
+          </td>
+          <td class="p-3">
+            <input type="text" value="${ex.series}" onchange="updateExerciseCell(${idx}, 'series', this.value)" class="w-full bg-transparent border border-transparent hover:border-gray-700 focus:border-brand-500 rounded px-2 py-1 text-brand-400 font-bold text-center focus:outline-none">
+          </td>
+          <td class="p-3">
+            <input type="text" value="${ex.reps}" onchange="updateExerciseCell(${idx}, 'reps', this.value)" class="w-full bg-transparent border border-transparent hover:border-gray-700 focus:border-brand-500 rounded px-2 py-1 text-gray-200 text-center focus:outline-none">
+          </td>
+          <td class="p-3">
+            <input type="text" value="${ex.cargas}" onchange="updateExerciseCell(${idx}, 'cargas', this.value)" class="w-full bg-transparent border border-transparent hover:border-gray-700 focus:border-brand-500 rounded px-2 py-1 text-emerald-400 font-medium text-center focus:outline-none">
+          </td>
+          <td class="p-3">
+            <input type="text" value="${ex.observaciones}" onchange="updateExerciseCell(${idx}, 'observaciones', this.value)" class="w-full bg-transparent border border-transparent hover:border-gray-700 focus:border-brand-500 rounded px-2 py-1 text-gray-300 text-xs focus:outline-none">
+          </td>
+          <td class="p-3 text-right whitespace-nowrap no-print space-x-1">
+            <button onclick="moveExercise(${idx}, -1)" title="Subir" class="px-1.5 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300">↑</button>
+            <button onclick="moveExercise(${idx}, 1)" title="Bajar" class="px-1.5 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300">↓</button>
+            <button onclick="removeExercise(${idx})" title="Eliminar" class="px-1.5 py-1 bg-red-950/60 hover:bg-red-800 rounded text-xs text-red-400">✕</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function applyTemplateToCurrentSocio() {
+      const tpl = document.getElementById('template-selector').value;
+      if (!tpl) return alert('Seleccioná primero una plantilla del desplegable.');
+      if (!confirm('Esto reemplazará los días actuales de este socio con la plantilla elegida. ¿Continuar?')) return;
+
+      const templates = {
+        fullbody: {
+          objetivo: 'Acondicionamiento Full Body',
+          nivel: 'Inicial',
+          dias: [
+            {
+              nombre: 'Día 1: Full Body A',
+              ejercicios: [
+                { nombre: 'Sentadilla Goblet con Mancuerna', series: '3', reps: '12', cargas: '14 kg', observaciones: 'Descanso 60-90s' },
+                { nombre: 'Press de Banca Plano', series: '3', reps: '10-12', cargas: '40 kg', observaciones: 'Controlar fase excéntrica' },
+                { nombre: 'Jalón al Pecho en Polea', series: '3', reps: '12', cargas: '35 kg', observaciones: 'Llevar barra al esternón' },
+                { nombre: 'Plancha Abdominal', series: '3', reps: '40 seg', cargas: 'Corporal', observaciones: 'Glúteos y abdomen firmes' }
+              ]
+            },
+            {
+              nombre: 'Día 2: Full Body B',
+              ejercicios: [
+                { nombre: 'Prensa de Piernas 45°', series: '3', reps: '12', cargas: '80 kg', observaciones: 'No bloquear rodillas' },
+                { nombre: 'Press Militar con Mancuernas', series: '3', reps: '10', cargas: '10 kg c/u', observaciones: 'Descanso 60s' },
+                { nombre: 'Remo en Polea Baja', series: '3', reps: '12', cargas: '35 kg', observaciones: 'Juntar escápulas atrás' },
+                { nombre: 'Curl de Bíceps + Extensión Tríceps', series: '3', reps: '12 + 12', cargas: '15 kg', observaciones: 'Superserie' }
+              ]
+            }
+          ]
+        },
+        ppl: {
+          objetivo: 'Hipertrofia Push / Pull / Legs',
+          nivel: 'Intermedio',
+          dias: [
+            {
+              nombre: 'Día 1: Push (Empuje)',
+              ejercicios: [
+                { nombre: 'Press de Banca Plano', series: '4', reps: '8-10', cargas: '65 kg', observaciones: 'Descanso 90s' },
+                { nombre: 'Press Inclinado Mancuernas', series: '3', reps: '10-12', cargas: '20 kg c/u', observaciones: 'RIR 2' },
+                { nombre: 'Elevaciones Laterales', series: '4', reps: '15', cargas: '10 kg c/u', observaciones: 'Subida controlada' },
+                { nombre: 'Fondos en Paralelas / Tríceps Polea', series: '3', reps: '12', cargas: '25 kg', observaciones: 'Descanso 60s' }
+              ]
+            },
+            {
+              nombre: 'Día 2: Pull (Tirón)',
+              ejercicios: [
+                { nombre: 'Dominadas / Jalón al Pecho', series: '4', reps: '8-10', cargas: '55 kg', observaciones: 'Descanso 90s' },
+                { nombre: 'Remo con Barra', series: '4', reps: '10', cargas: '55 kg', observaciones: 'Torso a 45°' },
+                { nombre: 'Face Pull en Polea', series: '3', reps: '15', cargas: '20 kg', observaciones: 'Salud escapular' },
+                { nombre: 'Curl de Bíceps Alterno', series: '3', reps: '12', cargas: '12 kg c/u', observaciones: 'Sin impulso' }
+              ]
+            },
+            {
+              nombre: 'Día 3: Legs (Piernas)',
+              ejercicios: [
+                { nombre: 'Sentadilla Libre', series: '4', reps: '8', cargas: '80 kg', observaciones: 'Descanso 2 min' },
+                { nombre: 'Peso Muerto Rumano', series: '4', reps: '10', cargas: '70 kg', observaciones: 'Enfoque isquiotibiales' },
+                { nombre: 'Sillón de Cuádriceps', series: '3', reps: '12-15', cargas: '45 kg', observaciones: 'Pausa 1s arriba' },
+                { nombre: 'Gemelos de Pie', series: '4', reps: '15', cargas: '50 kg', observaciones: 'Rango completo' }
+              ]
+            }
+          ]
+        },
+        fuerza: {
+          objetivo: 'Fuerza Base 5x5',
+          nivel: 'Avanzado',
+          dias: [
+            {
+              nombre: 'Sesión A (Fuerza)',
+              ejercicios: [
+                { nombre: 'Sentadilla Trasera con Barra', series: '5', reps: '5', cargas: '90 kg', observaciones: 'Descanso 2-3 min' },
+                { nombre: 'Press de Banca Plano', series: '5', reps: '5', cargas: '75 kg', observaciones: 'Descanso 2-3 min' },
+                { nombre: 'Remo Pendlay', series: '5', reps: '5', cargas: '65 kg', observaciones: 'Explosivo desde el suelo' }
+              ]
+            },
+            {
+              nombre: 'Sesión B (Fuerza)',
+              ejercicios: [
+                { nombre: 'Sentadilla Trasera con Barra', series: '5', reps: '5', cargas: '90 kg', observaciones: 'Descanso 2-3 min' },
+                { nombre: 'Press Militar de Pie', series: '5', reps: '5', cargas: '45 kg', observaciones: 'Core apretado' },
+                { nombre: 'Peso Muerto Convencional', series: '3', reps: '5', cargas: '110 kg', observaciones: 'Descanso 3 min' }
+              ]
+            }
+          ]
+        }
+      };
+
+      const chosen = templates[tpl];
+      state.rutinas[currentRoutineSocioId] = {
+        ...chosen,
+        profesor: document.getElementById('rutina-profesor').value || 'Coach'
+      };
+      currentRoutineDayIndex = 0;
+      saveState();
+      loadSocioRoutine();
+    }
+
+    function sendRoutineWhatsApp() {
+      const socio = state.socios.find(s => s.id === currentRoutineSocioId);
+      if (!socio) return;
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const fullGym = `${state.config.gymName} ${state.config.gymSubtitle}`.trim().toUpperCase();
+
+      let texto = `*${fullGym}* 🏋️‍♂️🔥
+`;
+      texto += `*Rutina de:* ${socio.nombre}
+`;
+      texto += `*Objetivo:* ${rutina.objetivo} | *Nivel:* ${rutina.nivel}
+
+`;
+
+      rutina.dias.forEach(d => {
+        texto += `📌 *${d.nombre}*
+`;
+        if (d.ejercicios.length === 0) {
+          texto += `_Sin ejercicios cargados_
+`;
+        } else {
+          d.ejercicios.forEach((ex, i) => {
+            texto += `${i + 1}. *${ex.nombre}* — ${ex.series}x${ex.reps} | Carga: ${ex.cargas} _(${ex.observaciones})_
+`;
+          });
+        }
+        texto += `
+`;
+      });
+
+      const url = `https://wa.me/${socio.telefono.replace(/\D/g, '')}?text=${encodeURIComponent(texto)}`;
+      window.open(url, '_blank');
+    }
+
+    function prepareAndPrintRoutine() {
+      const socio = state.socios.find(s => s.id === currentRoutineSocioId);
+      const rutina = ensureSocioRoutine(currentRoutineSocioId);
+      const fullGym = `${state.config.gymName} ${state.config.gymSubtitle}`.trim();
+      document.getElementById('print-gym-title').textContent = fullGym;
+      document.getElementById('print-socio-name').textContent = `Alumno: ${socio?.nombre || ''} (DNI: ${socio?.dni || ''})`;
+      document.getElementById('print-meta-info').textContent = `Objetivo: ${rutina.objetivo} | Nivel: ${rutina.nivel} | Prof: ${rutina.profesor}`;
+      window.print();
+    }
+
+    // ================= ASISTENCIAS =================
+    function handleCheckIn(e) {
+      e.preventDefault();
+      const dni = document.getElementById('checkin-dni').value.trim();
+      const socio = state.socios.find(s => s.dni === dni);
+      const resBox = document.getElementById('checkin-result');
+      resBox.classList.remove('hidden', 'bg-emerald-950/60', 'border-emerald-500', 'bg-amber-950/60', 'border-amber-500', 'bg-red-950/60', 'border-red-500');
+
+      if (!socio) {
+        resBox.classList.add('bg-red-950/60', 'border-red-500');
+        resBox.innerHTML = `<p class="font-bold text-red-400 text-base">❌ DNI No Encontrado</p><p class="text-xs text-gray-300">Verificá el número o registrá al alumno en Socios.</p>`;
+        return;
+      }
+
+      const st = getSocioStatus(socio.vencimiento);
+      if (st.code === 'ACTIVO') {
+        resBox.classList.add('bg-emerald-950/60', 'border-emerald-500');
+        resBox.innerHTML = `<p class="font-bold text-emerald-400 text-lg">✅ ACCESO PERMITIDO</p><p class="font-semibold text-white">${socio.nombre}</p><p class="text-xs text-emerald-300">Cuota al día (Vence: ${socio.vencimiento})</p>`;
+      } else if (st.code === 'POR_VENCER') {
+        resBox.classList.add('bg-amber-950/60', 'border-amber-500');
+        resBox.innerHTML = `<p class="font-bold text-amber-400 text-lg">⚠️ ACCESO PERMITIDO (AVISAR)</p><p class="font-semibold text-white">${socio.nombre}</p><p class="text-xs text-amber-300">${st.label} (${socio.vencimiento})</p>`;
+      } else {
+        resBox.classList.add('bg-red-950/60', 'border-red-500');
+        resBox.innerHTML = `<p class="font-bold text-red-400 text-lg">⛔ CUOTA VENCIDA</p><p class="font-semibold text-white">${socio.nombre}</p><p class="text-xs text-red-300">Venció el ${socio.vencimiento}. Solicitar renovación.</p>`;
+      }
+
+      state.asistencias.unshift({
+        fecha: new Date().toLocaleString('es-AR'),
+        nombre: socio.nombre,
+        dni: socio.dni,
+        estado: st.code
+      });
+      document.getElementById('checkin-dni').value = '';
+      saveState();
+      renderAsistencias();
+    }
+
+    function renderAsistencias() {
+      const tbody = document.getElementById('asistencias-list');
+      tbody.innerHTML = state.asistencias.slice(0, 30).map(a => {
+        const color = a.estado === 'ACTIVO' ? 'text-emerald-400' : (a.estado === 'POR_VENCER' ? 'text-amber-400' : 'text-red-400');
+        return `
+          <tr>
+            <td class="py-3 text-gray-400 text-xs">${a.fecha}</td>
+            <td class="py-3 font-medium text-white">${a.nombre}</td>
+            <td class="py-3 text-gray-300">${a.dni}</td>
+            <td class="py-3 font-bold text-xs ${color}">${a.estado}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ================= CAJA & FINANZAS =================
+    function renderCaja() {
+      let efectivo = 0, transf = 0, egresos = 0;
+      state.movimientos.forEach(m => {
+        const val = Number(m.monto);
+        if (m.tipo === 'EGRESO') egresos += val;
+        else if (m.metodo === 'Efectivo') efectivo += val;
+        else transf += val;
+      });
+
+      document.getElementById('caja-efectivo').textContent = formatARS(efectivo);
+      document.getElementById('caja-transferencia').textContent = formatARS(transf);
+      document.getElementById('caja-egresos').textContent = formatARS(egresos);
+
+      const tbody = document.getElementById('caja-table-body');
+      tbody.innerHTML = state.movimientos.map(m => {
+        const isEgreso = m.tipo === 'EGRESO';
+        return `
+          <tr class="hover:bg-gray-900/40">
+            <td class="p-4 text-gray-400 text-xs">${m.fecha}</td>
+            <td class="p-4 font-medium text-white">${m.concepto}</td>
+            <td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold ${isEgreso ? 'bg-red-500/10 text-red-400' : 'bg-emerald-500/10 text-emerald-400'}">${m.tipo}</span></td>
+            <td class="p-4 text-gray-300">${m.metodo}</td>
+            <td class="p-4 text-right font-bold ${isEgreso ? 'text-red-400' : 'text-emerald-400'}">${isEgreso ? '-' : '+'}${formatARS(m.monto)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openMovimientoModal() {
+      document.getElementById('movimiento-modal').classList.remove('hidden');
+      document.getElementById('movimiento-modal').classList.add('flex');
+    }
+
+    function closeMovimientoModal() {
+      document.getElementById('movimiento-modal').classList.add('hidden');
+      document.getElementById('movimiento-modal').classList.remove('flex');
+    }
+
+    function saveMovimiento(e) {
+      e.preventDefault();
+      state.movimientos.unshift({
+        id: 'm' + Date.now(),
+        fecha: new Date().toLocaleDateString('es-AR'),
+        tipo: document.getElementById('mov-tipo').value,
+        concepto: document.getElementById('mov-concepto').value.trim(),
+        monto: Number(document.getElementById('mov-monto').value),
+        metodo: document.getElementById('mov-metodo').value
+      });
+      saveState();
+      closeMovimientoModal();
+      e.target.reset();
+      renderCaja();
+      renderDashboard();
+    }
+
+    // ================= PLANES & TARIFAS =================
+    function renderPlanes() {
+      const grid = document.getElementById('planes-grid');
+      grid.innerHTML = state.planes.map((p, idx) => `
+        <div class="bg-cardbg border border-borderdark rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-start gap-2">
+              <input type="text" value="${p.nombre}" onchange="updatePlanField(${idx}, 'nombre', this.value)" class="font-bold text-lg text-white bg-transparent border-b border-transparent hover:border-gray-700 focus:border-brand-500 focus:outline-none w-full">
+              <span class="text-xs bg-brand-500/10 text-brand-400 px-2.5 py-1 rounded-full font-semibold shrink-0">${p.dias} días</span>
+            </div>
+            <input type="text" value="${p.descripcion}" onchange="updatePlanField(${idx}, 'descripcion', this.value)" class="text-xs text-gray-400 mt-2 bg-transparent border-b border-transparent hover:border-gray-700 focus:border-brand-500 focus:outline-none w-full">
+          </div>
+          <div class="pt-4 border-t border-borderdark flex items-center justify-between">
+            <div>
+              <label class="block text-[10px] uppercase text-gray-500">Valor Actual</label>
+              <input type="number" value="${p.precio}" onchange="updatePlanField(${idx}, 'precio', Number(this.value))" class="mt-1 w-32 bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-base font-extrabold text-emerald-400">
+            </div>
+            <button onclick="deletePlan(${idx})" class="text-xs text-red-400 hover:underline">Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updatePlanField(idx, field, val) {
+      state.planes[idx][field] = val;
+      saveState();
+    }
+
+    function addNewPlan() {
+      const nombre = prompt('Nombre del nuevo plan (ej: Funcional Libre):');
+      if (!nombre) return;
+      const precio = Number(prompt('Precio:', '25000'));
+      const dias = Number(prompt('Duración en días:', '30'));
+      state.planes.push({
+        id: 'p' + Date.now(),
+        nombre: nombre.trim(),
+        precio: precio || 25000,
+        dias: dias || 30,
+        descripcion: 'Membresía personalizada.'
+      });
+      saveState();
+      renderPlanes();
+    }
+
+    function deletePlan(idx) {
+      if (state.planes.length <= 1) return alert('Debe existir al menos un plan.');
+      if (!confirm('¿Eliminar este plan?')) return;
+      state.planes.splice(idx, 1);
+      saveState();
+      renderPlanes();
+    }
+
+    // ================= RESPALDO EXPORTAR / IMPORTAR =================
+    function exportBackup() {
+      const slug = (state.config.gymName || 'gimnasio').toLowerCase().replace(/\s+/g, '-');
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `respaldo-${slug}-${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+    }
+
+    function importBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (!imported.socios || !imported.planes) throw new Error('Formato inválido');
+          state = imported;
+          if (!state.config) state.config = defaultData.config;
+          if (!state.ejerciciosCatalogo) state.ejerciciosCatalogo = defaultData.ejerciciosCatalogo;
+          saveState();
+          applyBrandTheme();
+          renderDashboard();
+          alert('✅ Respaldo restaurado exitosamente.');
+        } catch (err) {
+          alert('❌ El archivo seleccionado no es un respaldo válido.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Inicializar
+    applyBrandTheme();
+    renderDashboard();
+  </script>
+</body>
+</html>
